@@ -31,11 +31,12 @@ def findObject(objName: str):
     return Image.open(BytesIO(response.content))
 
 
-def getMapByCoords(longitude: float, lattitude: float, zoom=0.01):
+def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, zoom=0.01):
     map_params = {
         "ll": f'{longitude},{lattitude}',
         "spn": f'{zoom},{zoom}',
-        "l": "sat,skl"
+        "l": "sat,skl",
+        "size": f"{width},{height}"
     }
 
     map_api_server = "http://static-maps.yandex.ru/1.x/"

@@ -18,10 +18,10 @@ class Window(QMainWindow):
 
     def initUI(self):
         self.setGeometry(350, 150, 1280, 720)
-        self.setWindowTitle("Супрематизм")
+        self.setWindowTitle("\"Клиент\" Тындекс Карт")
 
         mapImg = QPixmap()
-        mapImg.loadFromData(getMapByCoords(37.620070, 55.753630))
+        mapImg.loadFromData(getMapByCoords(37.620070, 55.753630, 650, 450, 0.001))
 
         self.mapLabel = QLabel(self)
         self.mapLabel.setPixmap(mapImg)
