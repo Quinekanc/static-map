@@ -33,7 +33,6 @@ class Window(QMainWindow):
         mapImg = QPixmap()
         mapImg.loadFromData(getMapByCoords(self.mapLongtitude,
                                            self.mapLattitude, 650, 450, self.scale))
-        print(1)
         self.mapLabel.setPixmap(mapImg)
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
