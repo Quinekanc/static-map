@@ -20,14 +20,33 @@ class Window(QMainWindow):
         self.setGeometry(350, 150, 1280, 720)
         self.setWindowTitle("\"Клиент\" Тындекс Карт")
 
-        mapImg = QPixmap()
-        mapImg.loadFromData(getMapByCoords(37.620070, 55.753630, 650, 450, 0.001))
+        self.scale = 0.01
+        self.mapLongtitude = 37.620070
+        self.mapLattitude = 55.753630
 
         self.mapLabel = QLabel(self)
-        self.mapLabel.setPixmap(mapImg)
         self.mapLabel.move(10, 10)
+
+        self.updateMap()
+
+    def updateMap(self):
+        mapImg = QPixmap()
+        mapImg.loadFromData(getMapByCoords(self.mapLongtitude,
+                                           self.mapLattitude, 650, 450, self.scale))
+        print(1)
+        self.mapLabel.setPixmap(mapImg)
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
+    def keyPressEvent(self, a0: QKeyEvent):
+        if a0.key() == Qt.Key_PageUp:
+            if self.scale > 0.01:
+                self.scale -= 0.01
+                self.updateMap()
+
+        if a0.key() == Qt.Key_PageDown:
+            if self.scale < 10:
+                self.scale += 0.01
+                self.updateMap()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
