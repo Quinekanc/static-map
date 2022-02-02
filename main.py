@@ -48,6 +48,23 @@ class Window(QMainWindow):
                 self.scale += 0.01
                 self.updateMap()
 
+        if a0.key() == Qt.Key_Up:
+            self.mapLattitude += 0.001
+            self.updateMap()
+
+        if a0.key() == Qt.Key_Down:
+            self.mapLattitude -= 0.001
+            self.updateMap()
+
+        if a0.key() == Qt.Key_Left:
+            self.mapLongtitude -= 0.001
+            self.updateMap()
+
+        if a0.key() == Qt.Key_Right:
+            self.mapLongtitude += 0.001
+            self.updateMap()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     wind = Window()
