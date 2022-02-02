@@ -1,6 +1,6 @@
 import requests
 from PyQt5.QtGui import QMouseEvent, QPainter, QBrush, QColor, QPaintEvent, QPen, QKeyEvent, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PyQt5.QtCore import Qt, QPoint
 import sys
 from finder import findObject, getMapByCoords
@@ -23,17 +23,46 @@ class Window(QMainWindow):
         self.scale = 0.01
         self.mapLongtitude = 37.620070
         self.mapLattitude = 55.753630
+        self.mapType = 'map'
 
         self.mapLabel = QLabel(self)
         self.mapLabel.move(10, 10)
 
+        self.mapToggle = QPushButton(self)
+        self.mapToggle.move(680, 10)
+        self.mapToggle.setText('Схема')
+        self.mapToggle.setChecked(True)
+
+        self.satToggle = QPushButton(self)
+        self.satToggle.move(680, 40)
+        self.satToggle.setText('Спутник')
+
+        self.gibToggle = QPushButton(self)
+        self.gibToggle.move(680, 70)
+        self.gibToggle.setText('Гибрид')
+
+        self.mapToggle.clicked.connect(self.changeMapToMap)
+        self.satToggle.clicked.connect(self.changeMapToSat)
+        self.gibToggle.clicked.connect(self.changeMapToGib)
+
+        self.updateMap()
+
+    def changeMapToGib(self):
+        self.mapType = 'sat,skl'
+        self.updateMap()
+
+    def changeMapToSat(self):
+        self.mapType = 'sat'
+        self.updateMap()
+
+    def changeMapToMap(self):
+        self.mapType = 'map'
         self.updateMap()
 
     def updateMap(self):
         mapImg = QPixmap()
         mapImg.loadFromData(getMapByCoords(self.mapLongtitude,
-                                           self.mapLattitude, 650, 450, self.scale))
-        print(1)
+                                           self.mapLattitude, 650, 450, self.mapType, self.scale))
         self.mapLabel.setPixmap(mapImg)
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 

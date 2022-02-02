@@ -31,11 +31,11 @@ def findObject(objName: str):
     return Image.open(BytesIO(response.content))
 
 
-def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, zoom=0.01):
+def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, map_type='map', zoom=0.01):
     map_params = {
         "ll": f'{longitude},{lattitude}',
         "spn": f'{zoom},{zoom}',
-        "l": "sat,skl",
+        "l": map_type,
         "size": f"{width},{height}"
     }
 
