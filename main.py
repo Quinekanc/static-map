@@ -94,39 +94,35 @@ class Window(QMainWindow):
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
     def keyPressEvent(self, a0: QKeyEvent):
-        try:
-            if a0.key() == Qt.Key_PageUp:
-                if self.scale > 0.01:
-                    self.scale -= 0.01
-                    self.updateMap()
+        if a0.key() == Qt.Key_PageUp:
+            if self.scale > 0.01:
+                self.scale -= 0.01
+                self.updateMap()
 
-            if a0.key() == Qt.Key_PageDown:
-                if self.scale < 10:
-                    self.scale += 0.01
-                    self.updateMap()
+        if a0.key() == Qt.Key_PageDown:
+            if self.scale < 10:
+                self.scale += 0.01
+                self.updateMap()
 
-            if a0.key() == Qt.Key_Up:
-                if -180 <= self.mapLattitude <= 180:
-                    self.mapLattitude += 0.001
-                    self.updateMap()
+        if a0.key() == Qt.Key_Up:
+            if -180 <= self.mapLattitude <= 180:
+                self.mapLattitude += 0.001
+                self.updateMap()
 
-            if a0.key() == Qt.Key_Down:
-                if -180 <= self.mapLattitude <= 180:
-                    self.mapLattitude -= 0.001
-                    self.updateMap()
+        if a0.key() == Qt.Key_Down:
+            if -180 <= self.mapLattitude <= 180:
+                self.mapLattitude -= 0.001
+                self.updateMap()
 
-            if a0.key() == Qt.Key_Left:
-                if -180 <= self.mapLongtitude <= 180:
-                    self.mapLongtitude -= 0.001
-                    self.updateMap()
+        if a0.key() == Qt.Key_Left:
+            if -180 <= self.mapLongtitude <= 180:
+                self.mapLongtitude -= 0.001
+                self.updateMap()
 
-            if a0.key() == Qt.Key_Right:
-                if -180 <= self.mapLongtitude <= 180:
-                    self.mapLongtitude += 0.001
-                    self.updateMap()
-
-        except Exception:
-            pass
+        if a0.key() == Qt.Key_Right:
+            if -180 <= self.mapLongtitude <= 180:
+                self.mapLongtitude += 0.001
+                self.updateMap()
 
 
 if __name__ == '__main__':
