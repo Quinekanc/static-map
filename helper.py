@@ -12,8 +12,7 @@ def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, 
         "spn": f'{zoom},{zoom}',
         "l": map_type,
         "size": f"{width},{height}",
-        'pt': f'{longitude},{lattitude},pm2rdm'
-        #  'pt': f'{pt[0]},{pt[1]},pm2rdm'
+        'pt': f'{pt[0]},{pt[1]},pm2rdm'
     }
 
     map_api_server = "http://static-maps.yandex.ru/1.x/"
