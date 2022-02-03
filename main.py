@@ -94,31 +94,39 @@ class Window(QMainWindow):
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
     def keyPressEvent(self, a0: QKeyEvent):
-        if a0.key() == Qt.Key_PageUp:
-            if self.scale > 0.01:
-                self.scale -= 0.01
-                self.updateMap()
+        try:
+            if a0.key() == Qt.Key_PageUp:
+                if self.scale > 0.01:
+                    self.scale -= 0.01
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_PageDown:
-            if self.scale < 10:
-                self.scale += 0.01
-                self.updateMap()
+            if a0.key() == Qt.Key_PageDown:
+                if self.scale < 10:
+                    self.scale += 0.01
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Up:
-            self.mapLattitude += 0.001
-            self.updateMap()
+            if a0.key() == Qt.Key_Up:
+                if -180 <= self.mapLattitude <= 180:
+                    self.mapLattitude += 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Down:
-            self.mapLattitude -= 0.001
-            self.updateMap()
+            if a0.key() == Qt.Key_Down:
+                if -180 <= self.mapLattitude <= 180:
+                    self.mapLattitude -= 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Left:
-            self.mapLongtitude -= 0.001
-            self.updateMap()
+            if a0.key() == Qt.Key_Left:
+                if -180 <= self.mapLongtitude <= 180:
+                    self.mapLongtitude -= 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Right:
-            self.mapLongtitude += 0.001
-            self.updateMap()
+            if a0.key() == Qt.Key_Right:
+                if -180 <= self.mapLongtitude <= 180:
+                    self.mapLongtitude += 0.001
+                    self.updateMap()
+
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':

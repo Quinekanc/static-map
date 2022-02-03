@@ -12,7 +12,8 @@ def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, 
         "spn": f'{zoom},{zoom}',
         "l": map_type,
         "size": f"{width},{height}",
-        'pt': f'{pt[0]},{pt[1]},pm2rdm'
+        'pt': f'{longitude},{lattitude},pm2rdm'
+        #  'pt': f'{pt[0]},{pt[1]},pm2rdm'
     }
 
     map_api_server = "http://static-maps.yandex.ru/1.x/"
@@ -38,13 +39,11 @@ def lonlat_distance(a, b):
 
 
 def find_obj(obj):
-    toponym_to_find = "+".join(obj)
-
     geocoder_api_server = "http://geocode-maps.yandex.ru/1.x/"
 
     geocoder_params = {
         "apikey": "40d1649f-0493-4b70-98ba-98533de7710b",
-        "geocode": toponym_to_find,
+        "geocode": obj,
         "format": "json"}
 
     response = requests.get(geocoder_api_server, params=geocoder_params)
