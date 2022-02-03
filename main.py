@@ -38,6 +38,11 @@ class Window(QMainWindow):
         self.mapLabel = QLabel(self)
         self.mapLabel.move(10, 10)
 
+        self.fullAddress = QLabel(self)
+        self.fullAddress.move(680, 410)
+        self.fullAddress.resize(1000, 30)
+        self.fullAddress.setText('Полный адресс: Россия, Москва, Красная площадь, 9')
+
         self.mapToggle = QPushButton(self)
         self.mapToggle.move(680, 50)
         self.mapToggle.setText('Схема')
@@ -76,9 +81,11 @@ class Window(QMainWindow):
             json_response = response.json()
             toponym = json_response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']
             toponym_cords = toponym['Point']['pos'].split()
+            toponym_address = toponym['metaDataProperty']['GeocoderMetaData']['text']
 
             self.mapLongtitude, self.mapLattitude = toponym_cords
             self.point = toponym_cords
+            self.fullAddress.setText(f'Полный адресс: {toponym_address}')
             self.updateMap()
 
         except Exception:
