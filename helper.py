@@ -1,5 +1,24 @@
 import math
 import requests
+import sys
+import requests
+from io import BytesIO
+from PIL import Image
+
+
+def getMapByCoords(longitude: float, lattitude: float, width: int, height: int, pt: list, map_type='map', zoom=0.01):
+    map_params = {
+        "ll": f'{longitude},{lattitude}',
+        "spn": f'{zoom},{zoom}',
+        "l": map_type,
+        "size": f"{width},{height}",
+        'pt': f'{pt[0]},{pt[1]},pm2rdm'
+    }
+
+    map_api_server = "http://static-maps.yandex.ru/1.x/"
+    response = requests.get(map_api_server, params=map_params)
+
+    return response.content
 
 
 def lonlat_distance(a, b):
@@ -19,7 +38,7 @@ def lonlat_distance(a, b):
 
 
 def find_obj(obj):
-    toponym_to_find = " ".join(obj)
+    toponym_to_find = "+".join(obj)
 
     geocoder_api_server = "http://geocode-maps.yandex.ru/1.x/"
 
@@ -28,9 +47,9 @@ def find_obj(obj):
         "geocode": toponym_to_find,
         "format": "json"}
 
-    response_1 = requests.get(geocoder_api_server, params=geocoder_params)
+    response = requests.get(geocoder_api_server, params=geocoder_params)
 
-    if not response_1:
+    if not response:
         raise (Exception('Неправильный ввод'))
 
-    return response_1
+    return response

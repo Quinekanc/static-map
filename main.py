@@ -1,9 +1,9 @@
 import requests
 from PyQt5.QtGui import QMouseEvent, QPainter, QBrush, QColor, QPaintEvent, QPen, QKeyEvent, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit
 from PyQt5.QtCore import Qt, QPoint
 import sys
-from finder import findObject, getMapByCoords
+from helper import getMapByCoords, find_obj
 
 
 mapCoordX = 1
@@ -24,28 +24,55 @@ class Window(QMainWindow):
         self.mapLongtitude = 37.620070
         self.mapLattitude = 55.753630
         self.mapType = 'map'
+        self.point = [self.mapLongtitude, self.mapLattitude]
+
+        self.searchObj = QLineEdit(self)
+        self.searchObj.resize(150, 25)
+        self.searchObj.move(680, 10)
+
+        self.searchObjEnter = QPushButton(self)
+        self.searchObjEnter.move(835, 10)
+        self.searchObjEnter.resize(25, 25)
+        self.searchObjEnter.setText('->')
 
         self.mapLabel = QLabel(self)
         self.mapLabel.move(10, 10)
 
         self.mapToggle = QPushButton(self)
-        self.mapToggle.move(680, 10)
+        self.mapToggle.move(680, 50)
         self.mapToggle.setText('Схема')
         self.mapToggle.setChecked(True)
 
         self.satToggle = QPushButton(self)
-        self.satToggle.move(680, 40)
+        self.satToggle.move(680, 80)
         self.satToggle.setText('Спутник')
 
         self.gibToggle = QPushButton(self)
-        self.gibToggle.move(680, 70)
+        self.gibToggle.move(680, 110)
         self.gibToggle.setText('Гибрид')
 
         self.mapToggle.clicked.connect(self.changeMapToMap)
         self.satToggle.clicked.connect(self.changeMapToSat)
         self.gibToggle.clicked.connect(self.changeMapToGib)
+        self.searchObjEnter.clicked.connect(self.searchingObj)
 
         self.updateMap()
+
+    def searchingObj(self):
+        try:
+            search = self.searchObj.text()
+            response = find_obj(search)
+
+            json_response = response.json()
+            toponym = json_response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']
+            toponym_cords = toponym['Point']['pos'].split()
+
+            self.mapLongtitude, self.mapLattitude = toponym_cords
+            self.point = toponym_cords
+            self.updateMap()
+
+        except Exception:
+            pass
 
     def changeMapToGib(self):
         self.mapType = 'sat,skl'
@@ -61,8 +88,8 @@ class Window(QMainWindow):
 
     def updateMap(self):
         mapImg = QPixmap()
-        mapImg.loadFromData(getMapByCoords(self.mapLongtitude,
-                                           self.mapLattitude, 650, 450, self.mapType, self.scale))
+        mapImg.loadFromData(getMapByCoords(self.mapLongtitude, self.mapLattitude, 650, 450, self.point, self.mapType,
+                                           self.scale))
         self.mapLabel.setPixmap(mapImg)
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
