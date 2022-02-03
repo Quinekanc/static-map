@@ -51,12 +51,22 @@ class Window(QMainWindow):
         self.gibToggle.move(680, 110)
         self.gibToggle.setText('Гибрид')
 
+        self.otkat = QPushButton(self)
+        self.otkat.move(680, 435)
+        self.otkat.resize(100, 25)
+        self.otkat.setText('Сброс координат')
+
         self.mapToggle.clicked.connect(self.changeMapToMap)
         self.satToggle.clicked.connect(self.changeMapToSat)
         self.gibToggle.clicked.connect(self.changeMapToGib)
+        self.otkat.clicked.connect(self.otkatCords)
         self.searchObjEnter.clicked.connect(self.searchingObj)
 
         self.updateMap()
+
+    def otkatCords(self):
+        self.searchObj.setText('37.620070, 55.753630')
+        self.searchingObj()
 
     def searchingObj(self):
         try:
@@ -94,35 +104,39 @@ class Window(QMainWindow):
         self.mapLabel.resize(mapImg.width(), mapImg.height())
 
     def keyPressEvent(self, a0: QKeyEvent):
-        if a0.key() == Qt.Key_PageUp:
-            if self.scale > 0.01:
-                self.scale -= 0.01
-                self.updateMap()
+        try:
+            if a0.key() == Qt.Key_PageUp:
+                if self.scale > 0.01:
+                    self.scale -= 0.01
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_PageDown:
-            if self.scale < 10:
-                self.scale += 0.01
-                self.updateMap()
+            if a0.key() == Qt.Key_PageDown:
+                if self.scale < 10:
+                    self.scale += 0.01
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Up:
-            if -180 <= self.mapLattitude <= 180:
-                self.mapLattitude += 0.001
-                self.updateMap()
+            if a0.key() == Qt.Key_Up:
+                if -180 <= self.mapLattitude <= 180:
+                    self.mapLattitude += 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Down:
-            if -180 <= self.mapLattitude <= 180:
-                self.mapLattitude -= 0.001
-                self.updateMap()
+            if a0.key() == Qt.Key_Down:
+                if -180 <= self.mapLattitude <= 180:
+                    self.mapLattitude -= 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Left:
-            if -180 <= self.mapLongtitude <= 180:
-                self.mapLongtitude -= 0.001
-                self.updateMap()
+            if a0.key() == Qt.Key_Left:
+                if -180 <= self.mapLongtitude <= 180:
+                    self.mapLongtitude -= 0.001
+                    self.updateMap()
 
-        if a0.key() == Qt.Key_Right:
-            if -180 <= self.mapLongtitude <= 180:
-                self.mapLongtitude += 0.001
-                self.updateMap()
+            if a0.key() == Qt.Key_Right:
+                if -180 <= self.mapLongtitude <= 180:
+                    self.mapLongtitude += 0.001
+                    self.updateMap()
+
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
