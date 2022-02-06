@@ -25,6 +25,7 @@ class Window(QMainWindow):
         self.mapLattitude = 55.753630
         self.mapType = 'map'
         self.point = [self.mapLongtitude, self.mapLattitude]
+        self.index = False
 
         self.searchObj = QLineEdit(self)
         self.searchObj.resize(150, 25)
@@ -41,7 +42,10 @@ class Window(QMainWindow):
         self.fullAddress = QLabel(self)
         self.fullAddress.move(680, 410)
         self.fullAddress.resize(1000, 30)
-        self.fullAddress.setText('Полный адресс: Россия, Москва, Красная площадь, 9')
+
+        self.addIndex = QPushButton(self)
+        self.addIndex.move(680, 350)
+        self.addIndex.setText('Добавить индекс')
 
         self.mapToggle = QPushButton(self)
         self.mapToggle.move(680, 50)
@@ -66,11 +70,23 @@ class Window(QMainWindow):
         self.gibToggle.clicked.connect(self.changeMapToGib)
         self.otkat.clicked.connect(self.otkatCords)
         self.searchObjEnter.clicked.connect(self.searchingObj)
+        self.addIndex.clicked.connect(self.addIndexToAddress)
 
-        self.updateMap()
+        self.searchObj.setText('Россия, Москва, Красная площадь, 9')
+
+        self.searchingObj()
+
+    def addIndexToAddress(self):
+        if self.index:
+            self.index = False
+            self.addIndex.setText('Добавить индекс')
+        else:
+            self.index = True
+            self.addIndex.setText('Убрать индекс')
+        self.searchingObj()
 
     def otkatCords(self):
-        self.searchObj.setText('37.620070, 55.753630')
+        self.searchObj.setText('Россия, Москва, Красная площадь, 9')
         self.searchingObj()
 
     def searchingObj(self):
@@ -82,10 +98,14 @@ class Window(QMainWindow):
             toponym = json_response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']
             toponym_cords = toponym['Point']['pos'].split()
             toponym_address = toponym['metaDataProperty']['GeocoderMetaData']['text']
+            toponym_index = toponym['metaDataProperty']['GeocoderMetaData']['Address']['postal_code']
 
             self.mapLongtitude, self.mapLattitude = toponym_cords
             self.point = toponym_cords
-            self.fullAddress.setText(f'Полный адресс: {toponym_address}')
+            if self.index:
+                self.fullAddress.setText(f'Полный адресс: {toponym_address} Индекс: {toponym_index}')
+            else:
+                self.fullAddress.setText(f'Полный адресс: {toponym_address}')
             self.updateMap()
 
         except Exception:
